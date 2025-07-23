@@ -21,7 +21,7 @@ public class FirstHatOverridePlugin : BaseUnityPlugin
         Logger = base.Logger;
 
         configHatIndex = Config.Bind("Hat", "HatIndex", 4, "Hat index to spawn. Default value is the index of the speed hat.");
-        configOccurrenceIndex = Config.Bind("Hat", "OccurrenceIndex", 0, "How many random npc occurrences until we get our confirmed hat.");
+        configOccurrenceIndex = Config.Bind("Hat", "OccurrenceIndex", 3, "At which random NPC occurrence do we force a hat. The default value is more central to the starting area.");
 
         Harmony harmony = new Harmony("com.yourname.firsthatoverride");
         harmony.PatchAll();
@@ -46,7 +46,7 @@ public class FirstHatOverridePlugin : BaseUnityPlugin
         [HarmonyPrefix]
         public static void ForceFirstHatPrefix(PersonRandomizer __instance)
         {
-            if (configOccurrenceIndex.Value > occurrences)
+            if (occurrences > configOccurrenceIndex.Value)
                 return;
 
             if (__instance.randomHats == null)
